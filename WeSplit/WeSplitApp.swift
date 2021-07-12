@@ -2,8 +2,6 @@
 //  WeSplitApp.swift
 //  WeSplit
 //
-//  Created by RachelleLee on 7/11/21.
-//
 
 import SwiftUI
 

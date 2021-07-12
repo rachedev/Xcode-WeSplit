@@ -1,21 +1,15 @@
-//
-//  ContentView.swift
-//  WeSplit
-//
-//  Created by RachelleLee on 7/11/21.
-//
-
 import SwiftUI
 
 struct ContentView: View {
     @State private var checkAmount = ""
-    @State private var numberOfPeople = 2
+    @State private var numberOfPeople = ""
     @State private var tipPercentage = 2
     
     let tipPercentages = [10, 15, 20, 25, 0]
     
     var totalPerPerson: Double {
-        let peopleCount = Double(numberOfPeople + 2)
+//        let peopleCount = Double(numberOfPeople + 2)
+        let peopleCount = Double(numberOfPeople) ?? 0
         let tipSelection = Double(tipPercentages[tipPercentage])
         let orderAmount = Double(checkAmount) ?? 0
         
@@ -26,6 +20,16 @@ struct ContentView: View {
         return amountPerPerson
     }
     
+    var amountPlusTip: Double {
+        let tipSelection = Double(tipPercentages[tipPercentage])
+        let orderAmount = Double(checkAmount) ?? 0
+        
+        let tipValue = orderAmount / 100 * tipSelection
+        let grandTotal = orderAmount + tipValue
+        
+        return grandTotal
+    }
+    
     var body: some View {
         NavigationView {
             Form {
@@ -33,11 +37,13 @@ struct ContentView: View {
                     TextField("Amount", text: $checkAmount)
                         .keyboardType(.decimalPad)
                     
-                    Picker("Number of people", selection: $numberOfPeople) {
-                        ForEach(2 ..< 100) {
-                            Text("\($0) people")
-                        }
-                    }
+//                    Picker("Number of people", selection: $numberOfPeople) {
+//                        ForEach(2 ..< 100) {
+//                            Text("\($0) people")
+//                        }
+//                    }
+                    TextField("Number of people", text: $numberOfPeople)
+                        .keyboardType(.numberPad)
                 }
                 
                 Section(header: Text("How much tip do you want to leave?")) {
@@ -49,7 +55,11 @@ struct ContentView: View {
                     .pickerStyle(SegmentedPickerStyle())
                 }
                 
-                Section {
+                Section(header: Text("Amount plus tip")) {
+                    Text("$\(amountPlusTip, specifier: "%.2f")")
+                }
+                
+                Section(header: Text("Amount per person")) {
                     Text("$\(totalPerPerson, specifier: "%.2f")")
                 }
             }
